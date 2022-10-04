@@ -1,8 +1,8 @@
 import { app } from "../app"
+import config from "../configs/index"
 
 
-
-const port = 3000
+const port = config.port
 
 app.listen(port, () => {
     console.log(`${port} server on`)
