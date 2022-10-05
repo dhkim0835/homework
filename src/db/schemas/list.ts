@@ -1,9 +1,18 @@
-import mongoose, { Model, model, Schema } from "mongoose";
+import mongoose, { Document, Model, model, Schema } from "mongoose";
 export interface IList{
   description: string
   isSuccess?: boolean
 }
-const ListSchema = new Schema(
+
+interface IListDocument extends IList, Document {
+  findListById: (id: string) => Promise<IList>
+}
+
+interface IListModel extends Model<IListDocument> {
+
+}
+
+const listSchema: Schema<IListDocument> = new mongoose.Schema(
   {
     description: {
         type: String,
@@ -20,4 +29,6 @@ const ListSchema = new Schema(
   },
 );
 
-export const listModel = mongoose.model("List", ListSchema)
+listSchema.statics.findListById = function (id: string){ return this.findById(id) }
+
+export const listModel = mongoose.model<IListDocument, IListModel>("List", listSchema)
