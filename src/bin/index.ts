@@ -1,9 +1,8 @@
-import { app } from "../app"
+import { Server } from "../app"
 import config from "../configs/index"
-
 
 const port = config.port
 
-app.listen(port, () => {
-    console.log(`${port} server on`)
-})
+const server = new Server()
+
+server.initialize(port)
