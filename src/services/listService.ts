@@ -17,9 +17,15 @@ export class ListService {
         return lists
     }
 
-    private updateIsSuccess = async (id: string) => {
+    private updateIsSuccess = async (id: string): Promise<IList | null>  => {
         const updatedIsSuccess = await this.model.updateIsSuccess(id)
 
         return updatedIsSuccess
+    }
+
+    private deleteList = async (id: string): Promise<IList | null>  => {
+        const deletedList = await this.model.deleteList(id)
+
+        return deletedList
     }
 }

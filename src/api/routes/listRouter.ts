@@ -25,7 +25,7 @@ export class ListRouter {
         }
     }
 
-    private getAllList = async (req,res,next) => {
+    private getAllList = async (req,res,next):Promise<void> => {
         try {
             const lists = await this.service.getAllList()
 
@@ -35,7 +35,7 @@ export class ListRouter {
         }
     }
 
-    private updateIsSuccess = async (req, res, next) => {
+    private updateIsSuccess = async (req, res, next):Promise<void> => {
         try {
             const id = req.params.id
             const udpatedIsSuccess = await this.service.updateIsSuccess(id)
@@ -46,9 +46,21 @@ export class ListRouter {
         }
     }
 
+    private deleteList = async (req, res, next):Promise<void> => {
+        try {
+            const id = req.params.id
+            const deletedList = await this.service.deleteList(id)
+
+            res.status(200).json(deletedList)
+        } catch (error) {
+            next(error)
+        }
+    }
+
     private routes () {
         this.listRouter.post("/", this.createList)
         this.listRouter.get("/", this.getAllList)
         this.listRouter.patch("/:id", this.updateIsSuccess)
+        this.listRouter.delete("/:id", this.deleteList)
     }
 }
