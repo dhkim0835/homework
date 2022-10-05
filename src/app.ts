@@ -3,10 +3,15 @@ import express, { Request, Response } from "express"
 import cors from "cors"
 import morgan from "morgan"
 import mongoose from "mongoose"
+import helmet from "helmet"
+import rateLimit from "express-rate-limit"
+import favicon from "serve-favicon"
+import path from "path"
 
 import { ListRouter } from "./api"
 import { ListService } from "./services/listService"
 import { MongoListModel } from "./db/moedels/List"
+
 
 import { errorMiddleware } from "./api"
 
@@ -34,6 +39,15 @@ export class Server {
         this.app.use(cors())
         this.app.use(express.json())
         this.app.use(morgan("dev"))
+        this.app.use(helmet())
+
+        const limiter = rateLimit({
+            windowMs: 15 * 60 * 1000,
+            max: 100
+        })
+        this.app.use(limiter)
+
+        this.app.use(favicon(path.join(__dirname, 'public', 'typescript.png')))
 
         this.setRouters()
         this.app.use(errorMiddleware)
