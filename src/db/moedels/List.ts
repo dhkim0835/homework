@@ -9,4 +9,10 @@ export class MongoListModel {
 
         return newList
     }
+
+    private getAllList = async (): Promise<IList[]> => {
+        const lists = await this.listModel.find()
+
+        return lists
+    }
 }

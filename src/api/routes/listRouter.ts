@@ -4,7 +4,7 @@ import { IList } from "../../db/schemas/list"
 export class ListRouter {
     private service
     public listRouter
-    
+
     constructor(service) {
         this.service = service
         this.listRouter = Router()
@@ -22,7 +22,17 @@ export class ListRouter {
             }
             const newList = await this.service.createList(newListInfo)
 
-            res.status(200).json(newList)
+            res.status(201).json(newList)
+        } catch (error) {
+            next(error)
+        }
+    }
+
+    private getAllList = async (req,res,next) => {
+        try {
+            const lists = await this.service.getAllList()
+
+            res.status(200).json(lists)
         } catch (error) {
             next(error)
         }
@@ -30,5 +40,6 @@ export class ListRouter {
 
     private routes () {
         this.listRouter.post("/", this.createList)
+        this.listRouter.get("/", this.getAllList)
     }
 }

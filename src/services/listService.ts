@@ -11,4 +11,10 @@ export class ListService {
 
         return newList
     }
+
+    private getAllList = async (): Promise<IList[]> => {
+        const lists = await this.model.getAllList()
+
+        return lists
+    }
 }
