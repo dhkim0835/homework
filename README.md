@@ -55,3 +55,11 @@
 - passwd ubuntu => passwd 변경
 - sudo service ssh restart
 - -i "~~.pem" 없이 작성 => 로그인 됨
+
+##### 리눅스 열린 포트 찾아 죽이기
+
+- sudo apt install nmap
+- nmap localhost
+
+- sudo apt install psmisc
+- fuser -k [열린 포트]/tcp
