@@ -4,6 +4,7 @@ import { IList } from "../../db/schemas/list"
 export class ListRouter {
     private service
     public listRouter
+    
     constructor(service) {
         this.service = service
         this.listRouter = Router()

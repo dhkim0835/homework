@@ -4,7 +4,8 @@ export class MongoListModel {
     private listModel = listModel
 
     private createList = async (listInfo: IList): Promise<IList> => {
-        const newList = await this.listModel.create(listInfo)
+        const newList = new this.listModel(listInfo)
+        newList.save().then(() => console.log("make list succ"))
 
         return newList
     }

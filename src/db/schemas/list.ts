@@ -13,7 +13,6 @@ export const listSchema = new Schema(
     },
     email: {
         type: String,
-        unique: true,
         required: true,
     },
     description: {
