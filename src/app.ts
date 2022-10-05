@@ -1,6 +1,6 @@
 import express, { Request, Response } from "express"
 
-import config from "./configs/index"
+
 
 const app = express()
 

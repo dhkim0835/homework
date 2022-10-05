@@ -27,6 +27,7 @@
 
 - sudo curl -sL https://deb.nodesource.com/setup_16.x | sudo -E bash
 - sudo apt-get install -y nodejs
+- sudu apt-get update && sudo apt-get install yarn
 
 ##### 우분투 전역 환경 변수
 
