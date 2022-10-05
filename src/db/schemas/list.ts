@@ -1,33 +1,34 @@
-import { Model, model, Schema } from "mongoose";
+import mongoose, { Document, Model, model, Schema } from "mongoose";
 export interface IList{
-    username: string
-    email: string
-    description: string
-    country: string
+  description: string
+  isSuccess?: boolean
 }
-export const listSchema = new Schema(
+
+interface IListDocument extends IList, Document {
+  findListById: (id: string) => Promise<IList>
+}
+
+interface IListModel extends Model<IListDocument> {
+
+}
+
+const listSchema: Schema<IListDocument> = new mongoose.Schema(
   {
-    username: {
-        type: String,
-        required: true,
-    },
-    email: {
-        type: String,
-        required: true,
-    },
     description: {
         type: String,
         required: true,
     },
-    country: {
-        type: String,
+    isSuccess: {
+        type: Boolean,
         required: true,
-        }
+        default: false
+    }
   },
   {
       timestamps: true,
   },
 );
 
-export const listModel = model<IList>("List", listSchema)
+listSchema.statics.findListById = function (id: string){ return this.findById(id) }
 
+export const listModel = mongoose.model<IListDocument, IListModel>("List", listSchema)
