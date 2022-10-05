@@ -25,7 +25,7 @@ export class ListRouter {
         }
     }
 
-    private getAllList = async (req,res,next):Promise<void> => {
+    private getAllList = async (req, res, next):Promise<void> => {
         try {
             const lists = await this.service.getAllList()
 

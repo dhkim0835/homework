@@ -1,9 +1,9 @@
-import { Model, model, Schema } from "mongoose";
+import mongoose, { Model, model, Schema } from "mongoose";
 export interface IList{
   description: string
   isSuccess?: boolean
 }
-export const listSchema = new Schema(
+const ListSchema = new Schema(
   {
     description: {
         type: String,
@@ -20,5 +20,4 @@ export const listSchema = new Schema(
   },
 );
 
-export const listModel = model<IList>("List", listSchema)
-
+export const listModel = mongoose.model("List", ListSchema)

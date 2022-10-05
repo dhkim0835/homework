@@ -24,7 +24,7 @@ export class MongoListModel {
         } else if (foundList.isSuccess === true) {
             const updatedIsSuccess = await this.listModel.findByIdAndUpdate(id, { isSuccess: false })
             return updatedIsSuccess
-            
+
         } else {
             const updatedIsSuccess = await this.listModel.findByIdAndUpdate(id, { isSuccess: true })
             return updatedIsSuccess
