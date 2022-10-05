@@ -1,9 +1,12 @@
-import {IUser} from "../schemas/user";
+import { userModel} from "../schemas/user";
 
 
-export class UserModel {
-    private userModel
-    constructor(userModel) {
-        this.userModel = userModel
+export class MongoUserModel {
+    private userModel = userModel
+
+    private createList = async (listInfo) => {
+        const newList = await this.userModel.create(listInfo)
+
+        return newList
     }
 }

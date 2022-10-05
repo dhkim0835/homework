@@ -16,7 +16,7 @@ export const userSchema = new Schema(
         unique: true,
         required: true,
     },
-    list: {
+    description: {
         type: String,
         required: true,
     },
