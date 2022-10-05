@@ -1,11 +1,11 @@
 import { Model, model, Schema } from "mongoose";
-export interface IUser{
+export interface IList{
     username: string
     email: string
-    list: string
+    description: string
     country: string
 }
-export const userSchema = new Schema(
+export const listSchema = new Schema(
   {
     username: {
         type: String,
@@ -30,5 +30,5 @@ export const userSchema = new Schema(
   },
 );
 
-export const userModel = model<IUser>("User", userSchema)
+export const listModel = model<IList>("List", listSchema)
 

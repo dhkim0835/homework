@@ -6,11 +6,9 @@ import mongoose from "mongoose"
 
 import { ListRouter } from "./api"
 import { ListService } from "./services/listService"
-import { MongoUserModel } from "./db/moedels/User"
+import { MongoListModel } from "./db/moedels/List"
 
 import { errorMiddleware } from "./api"
-
-
 
 import config from "./configs"
 
@@ -20,7 +18,7 @@ export class Server {
 
     constructor() {
         this.app = express()
-        this.listRouter = new ListRouter(new ListService(new MongoUserModel))
+        this.listRouter = new ListRouter(new ListService(new MongoListModel))
     }
 
     setRouters() {

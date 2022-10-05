@@ -1,4 +1,5 @@
 import { Router } from "express"
+import { IList } from "../../db/schemas/list"
 
 export class ListRouter {
     private service
@@ -9,10 +10,10 @@ export class ListRouter {
         this.routes()
     }
 
-    private createList = async (req, res, next) => {
+    private createList = async (req, res, next):Promise<void> => {
         try{
             const { email, description, username, country } = req.body
-            const newListInfo = {
+            const newListInfo: IList = {
                 email,
                 description,
                 username,
