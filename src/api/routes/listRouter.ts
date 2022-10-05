@@ -12,16 +12,13 @@ export class ListRouter {
     }
 
     private createList = async (req, res, next):Promise<void> => {
-        try{
-            const { email, description, username, country } = req.body
+        try {
+            const { description } = req.body
             const newListInfo: IList = {
-                email,
                 description,
-                username,
-                country
             }
             const newList = await this.service.createList(newListInfo)
-
+            
             res.status(201).json(newList)
         } catch (error) {
             next(error)
@@ -38,8 +35,20 @@ export class ListRouter {
         }
     }
 
+    private updateIsSuccess = async (req, res, next) => {
+        try {
+            const id = req.params.id
+            const udpatedIsSuccess = await this.service.updateIsSuccess(id)
+
+            res.status(200).json(udpatedIsSuccess) 
+        } catch (error) {
+            next(error)
+        }
+    }
+
     private routes () {
         this.listRouter.post("/", this.createList)
         this.listRouter.get("/", this.getAllList)
+        this.listRouter.patch("/:id", this.updateIsSuccess)
     }
 }

@@ -49,6 +49,6 @@ export class Server {
                     console.log(`${port} server on`)
                 })
             })
-            .catch(() => console.log("몽고 디비 연결 실패 ㅠㅠ"));
+            .catch(() => console.log(`${config.MONGO_URL} 연결 실패`));
     }
 }

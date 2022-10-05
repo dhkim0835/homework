@@ -1,28 +1,19 @@
 import { Model, model, Schema } from "mongoose";
 export interface IList{
-    username: string
-    email: string
-    description: string
-    country: string
+  description: string
+  isSuccess?: boolean
 }
 export const listSchema = new Schema(
   {
-    username: {
-        type: String,
-        required: true,
-    },
-    email: {
-        type: String,
-        required: true,
-    },
     description: {
         type: String,
         required: true,
     },
-    country: {
-        type: String,
+    isSuccess: {
+        type: Boolean,
         required: true,
-        }
+        default: false
+    }
   },
   {
       timestamps: true,

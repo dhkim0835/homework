@@ -41,3 +41,17 @@
 - vi ~/.bashrc
 - vi 편집기로 홈 디렉토리에 위치한 .bashrc 파일 열고 마지막 줄에 추가
 - export PATH=$PATH:/home/jang/.local/bin
+
+#### troubleshooting
+
+- ubuntu에서 !5는 printenv다..
+- \!5 하니까 나온다. => !5가 mongo url에 포함되어 있어 printenv로 입력이 되었다.
+
+##### ubuntu pem키 없이 login password 하기
+
+- sudo vi /etc/ssh/sshd_config
+- PasswordAuthentication yes
+- sudo su
+- passwd ubuntu => passwd 변경
+- sudo service ssh restart
+- -i "~~.pem" 없이 작성 => 로그인 됨
