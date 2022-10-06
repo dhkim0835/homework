@@ -1,29 +1,35 @@
 import { IList } from "../db/schemas/list"
+interface IListService {
+    createList: (listInfo: IList) => Promise<IList>
+    getAllList: () => Promise<IList[]>
+    updateIsSuccess: (id: string) => Promise<IList | null>
+    deleteList: (id: string) => Promise<IList | null>
+} 
 
-export class ListService {
-    private model
+export class ListService implements IListService {
+    public model
     constructor(model) {
         this.model = model
     }
 
-    private createList = async (listInfo: IList): Promise<IList> => {
+    public createList = async (listInfo: IList): Promise<IList> => {
         const newList = await this.model.createList(listInfo)
         return newList
     }
 
-    private getAllList = async (): Promise<IList[]> => {
+    public getAllList = async (): Promise<IList[]> => {
         const lists = await this.model.getAllList()
 
         return lists
     }
 
-    private updateIsSuccess = async (id: string): Promise<IList | null>  => {
+    public updateIsSuccess = async (id: string): Promise<IList | null>  => {
         const updatedIsSuccess = await this.model.updateIsSuccess(id)
 
         return updatedIsSuccess
     }
 
-    private deleteList = async (id: string): Promise<IList | null>  => {
+    public deleteList = async (id: string): Promise<IList | null>  => {
         const deletedList = await this.model.deleteList(id)
 
         return deletedList

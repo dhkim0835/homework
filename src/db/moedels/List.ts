@@ -1,23 +1,30 @@
 import { IList, listModel } from "../schemas/list"
+interface IMongoListModel {
+    createList: (listInfo: IList) => Promise<IList>
+    getAllList: () => Promise<IList[]>
+    updateIsSuccess: (id: string) => Promise<IList | null>
+    deleteList: (id: string) => Promise<IList | null>
+} 
 
-export class MongoListModel {
-    private listModel = listModel
+export class MongoListModel implements IMongoListModel {
+    public listModel = listModel
+    
 
-    private createList = async (listInfo: IList): Promise<IList> => {
+    public createList = async (listInfo: IList): Promise<IList> => {
         const newList = new this.listModel(listInfo)
         newList.save().then(() => console.log("make list succ"))
-
+        
         return newList
     }
 
-    private getAllList = async (): Promise<IList[]> => {
+    public getAllList = async (): Promise<IList[]> => {
         const lists = await this.listModel.find()
 
         return lists
     }
 
-    private updateIsSuccess = async (id: string): Promise<IList | null> => {
-        const foundList = await this.findListById(id)
+    public updateIsSuccess = async (id: string): Promise<IList | null> => {
+        const foundList = await this.listModel.findListById(id)
         if (!foundList) {
             throw new Error("해당 리스트가 없습니다.")
 
@@ -31,13 +38,12 @@ export class MongoListModel {
         }
     }
 
-    private findListById = async (id: string): Promise<IList | null> => {
-        const foundList = await this.listModel.findById(id)
-
-        return foundList
-    } 
-
-    private deleteList = async (id: string): Promise<IList | null>  => {
+    public deleteList = async (id: string): Promise<IList | null> => {
+        const foundList = await this.listModel.findListById(id)
+        if (!foundList) {
+            throw new Error("해당 리스트가 없습니다.")
+        }
+        
         const deletedList = await this.listModel.findByIdAndDelete(id)
 
         return deletedList

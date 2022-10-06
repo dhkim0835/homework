@@ -4,15 +4,19 @@ export interface IList{
   isSuccess?: boolean
 }
 
+// Model을 통해 생성되는 아이가 다큐먼트이다.
+// listSchema Method로 생성되는 아이의 타입이 들어가는 곳
 interface IListDocument extends IList, Document {
-  findListById: (id: string) => Promise<IList>
+
 }
 
+// Model을 통해 생성되는 아이가 다큐먼트이다.
+// listSchema statics로 생성되는 아이의 타입이 들어가는 곳
 interface IListModel extends Model<IListDocument> {
-
+  findListById: (id:string) => Promise<IList>
 }
 
-const listSchema: Schema<IListDocument> = new mongoose.Schema(
+const listSchema: Schema<IListDocument> = new Schema(
   {
     description: {
         type: String,

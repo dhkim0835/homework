@@ -23,7 +23,7 @@ export class Server {
 
     constructor() {
         this.app = express()
-        this.listRouter = new ListRouter(new ListService(new MongoListModel))
+        this.listRouter = new ListRouter(new ListService(new MongoListModel()))
     }
 
     setRouters() {
