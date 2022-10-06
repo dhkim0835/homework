@@ -31,7 +31,7 @@ export class Server {
             res.send("Hello World!!")
         })
 
-        this.app.use("/list", this.listRouter.listRouter)
+        this.app.use("/api/list", this.listRouter.listRouter)
     }
 
     setMiddlewares() {
