@@ -22,11 +22,11 @@ export class MongoListModel {
             throw new Error("해당 리스트가 없습니다.")
 
         } else if (foundList.isSuccess === true) {
-            const updatedIsSuccess = await this.listModel.findByIdAndUpdate(id, { isSuccess: false }, {new: true})
+            const updatedIsSuccess = await this.listModel.findByIdAndUpdate(id, { isSuccess: false }, { new: true })
             return updatedIsSuccess
 
         } else {
-            const updatedIsSuccess = await this.listModel.findByIdAndUpdate(id, { isSuccess: true }, {new: true})
+            const updatedIsSuccess = await this.listModel.findByIdAndUpdate(id, { isSuccess: true }, { new: true })
             return updatedIsSuccess
         }
     }
