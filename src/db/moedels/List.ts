@@ -23,6 +23,16 @@ export class MongoListModel implements IMongoListModel {
         return lists
     }
 
+    public getListWithPagenation = async (page: number, perPage: number) => {
+        const total = await this.listModel.countDocuments()
+        const lists = await this.listModel.getListWithPagenation(page, perPage)
+
+        const totalPage = Math.ceil(total / perPage)
+
+        return {lists, totalPage}
+    }
+
+
     public updateIsSuccess = async (id: string): Promise<IList | null> => {
         const foundList = await this.listModel.findListById(id)
         if (!foundList) {

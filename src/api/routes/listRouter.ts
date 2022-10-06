@@ -35,6 +35,20 @@ export class ListRouter {
         }
     }
 
+    private getListWithPagenation = async (req, res, next) => {
+        try {
+            const page = Number(req.query.page || 1); // 값이 없다면 기본값으로 1 사용
+            const perPage = Number(req.query.perPage || 10);
+
+            const pagenatedList = await this.service.getListWithPagenation(page, perPage)
+
+            res.status(200).json(pagenatedList)
+
+        } catch (error) {
+            next(error)
+        }
+    }
+
     private updateIsSuccess = async (req, res, next):Promise<void> => {
         try {
             const id = req.params.id
@@ -59,6 +73,7 @@ export class ListRouter {
 
     private routes () {
         this.listRouter.post("/", this.createList)
+        this.listRouter.get("/pagenate", this.getListWithPagenation)
         this.listRouter.get("/", this.getAllList)
         this.listRouter.patch("/:id", this.updateIsSuccess)
         this.listRouter.delete("/:id", this.deleteList)

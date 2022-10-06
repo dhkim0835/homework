@@ -23,6 +23,12 @@ export class ListService implements IListService {
         return lists
     }
 
+    public getListWithPagenation = async (page, perPage) => {
+        const pagenatedList = await this.model.getListWithPagenation(page, perPage)
+        
+        return pagenatedList
+    }
+
     public updateIsSuccess = async (id: string): Promise<IList | null>  => {
         const updatedIsSuccess = await this.model.updateIsSuccess(id)
 
