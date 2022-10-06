@@ -38,9 +38,14 @@
 - unset [환경 변수]
 
 - 재부팅시 환경 변수 자동 적용
-- vi ~/.bashrc
+- vi /etc/bash.bashrc
+- /etc/bash.bashrc은 우분투가 로그인 될 때 자동으로 먼저 실행되는 파일이다.
+
+**troubleshooting**
+
 - vi 편집기로 홈 디렉토리에 위치한 .bashrc 파일 열고 마지막 줄에 추가
 - export PATH=$PATH:/home/jang/.local/bin
+- readonly 파일이라 안 된다면 sudo -s root로 연결하여 수정 할 수 있다
 
 #### troubleshooting
 
