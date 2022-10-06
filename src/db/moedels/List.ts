@@ -1,12 +1,7 @@
+import { IModel } from "../../services/listService"
 import { IList, listModel } from "../schemas/list"
-interface IMongoListModel {
-    createList: (listInfo: IList) => Promise<IList>
-    getAllList: () => Promise<IList[]>
-    updateIsSuccess: (id: string) => Promise<IList | null>
-    deleteList: (id: string) => Promise<IList | null>
-} 
 
-export class MongoListModel implements IMongoListModel {
+export class MongoListModel implements IModel {
     public listModel = listModel
     
 

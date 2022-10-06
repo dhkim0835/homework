@@ -1,8 +1,15 @@
 import { Router } from "express"
 import { IList } from "../../db/schemas/list"
 
+export interface IService {
+    createList: (listInfo: IList) => Promise<IList>
+    getAllList: () => Promise<IList[]>
+    updateIsSuccess: (id: string) => Promise<IList | null>
+    deleteList: (id: string) => Promise<IList | null>
+    getListWithPagenation: (perPage: number, page: number) => Promise<any>
+}
 export class ListRouter {
-    private service
+    private service: IService
     public listRouter
 
     constructor(service) {

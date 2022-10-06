@@ -1,13 +1,16 @@
+import { IService } from "../api/routes/listRouter"
 import { IList } from "../db/schemas/list"
-interface IListService {
+
+export interface IModel {
     createList: (listInfo: IList) => Promise<IList>
     getAllList: () => Promise<IList[]>
     updateIsSuccess: (id: string) => Promise<IList | null>
     deleteList: (id: string) => Promise<IList | null>
-} 
+    getListWithPagenation: (perPage: number, page: number) => Promise<any>
+}
 
-export class ListService implements IListService {
-    public model
+export class ListService implements IService {
+    public model: IModel
     constructor(model) {
         this.model = model
     }
