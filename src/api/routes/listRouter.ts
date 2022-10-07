@@ -73,7 +73,7 @@ export class ListRouter {
             const id = req.params.id
             const udpatedIsSuccess = await this.service.updateIsSuccess(id)
 
-            req.responseObject = udpatedIsSuccess
+            req.responseObject = { isSuccess: udpatedIsSuccess?.isSuccess}
             return next()
         } catch (error) {
             next(error)
@@ -85,7 +85,7 @@ export class ListRouter {
             const id = req.params.id
             const deletedList = await this.service.deleteList(id)
 
-            req.responseObject = deletedList
+            req.responseObject = "삭제 되었습니다."
             return next()
         } catch (error) {
             next(error)
