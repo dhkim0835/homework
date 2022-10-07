@@ -86,15 +86,15 @@ export class ListRouter {
                 const id = req.params.id
                 const password = req.body.password
                 const deletedList = await this.service.deleteList(id, password)
+                req.responseObject = `${deletedList?.description}이(가) 삭제되었습니다.`
+                return next()
             }
             else {
                 const id = req.params.id
                 const deletedList = await this.service.deleteList(id)
+                req.responseObject = `${deletedList?.description}이(가) 삭제되었습니다.`
+                return next()
             }
-
-
-            req.responseObject = "삭제 되었습니다."
-            return next()
         } catch (error) {
             next(error)
         }
