@@ -5,7 +5,7 @@ export interface IService {
     createList: (listInfo: IList) => Promise<IList>
     getAllList: () => Promise<IList[]>
     updateIsSuccess: (id: string) => Promise<IList | null>
-    deleteList: (id: string, password: string) => Promise<IList | null>
+    deleteList: (id: string, password?: string) => Promise<IList | null>
     getListWithPagenation: (perPage: number, page: number) => Promise<any>
 }
 export class ListRouter {
@@ -82,9 +82,16 @@ export class ListRouter {
 
     private deleteList = async (req, res, next):Promise<void> => {
         try {
-            const id = req.params.id
-            const password = req.body.password
-            const deletedList = await this.service.deleteList(id, password)
+            if (process.env.NODE_ENV === "production") {
+                const id = req.params.id
+                const password = req.body.password
+                const deletedList = await this.service.deleteList(id, password)
+            }
+            else {
+                const id = req.params.id
+                const deletedList = await this.service.deleteList(id)
+            }
+
 
             req.responseObject = "삭제 되었습니다."
             return next()

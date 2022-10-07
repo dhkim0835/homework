@@ -50,14 +50,21 @@ export class ListService implements IService {
         return updatedIsSuccess
     }
 
-    public deleteList = async (id: string, password: string): Promise<IList | null> => {
-        const isPassword = await this.passwordModel.comparePassword(password)
-        if (isPassword === true) {
+    public deleteList = async (id: string, password?: string): Promise<IList | null> => {
+        if (typeof password === "string") {
+            const isPassword = await this.passwordModel.comparePassword(password)
+            if (isPassword === true) {
+                const deletedList = await this.listModel.deleteList(id)
+
+                return deletedList
+            } else {
+                throw new Error ("비밀번호가 일치하지 않습니다.")
+            }
+        } else {
             const deletedList = await this.listModel.deleteList(id)
 
             return deletedList
-        } else {
-            throw new Error ("비밀번호가 일치하지 않습니다.")
         }
+        
     }
 }
