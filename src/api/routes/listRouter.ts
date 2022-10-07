@@ -8,8 +8,8 @@ import config from "../../configs"
 declare global {
   namespace Express {
     interface Request {
-        responseObject: any;
-        statusCode: number
+        responseObject?: any;
+        statusCode?: number
     }
   }
 }
