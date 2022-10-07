@@ -1,6 +1,6 @@
 import { Router } from "express"
 import { IList } from "../../db/schemas/list"
-
+import config from "../../configs"
 export interface IService {
     createList: (listInfo: IList) => Promise<IList>
     getAllList: () => Promise<IList[]>
@@ -35,8 +35,8 @@ export class ListRouter {
     private getAllList = async (req, res, next):Promise<void> => {
         try {
             const lists = await this.service.getAllList()
-
-            res.status(200).json(lists)
+            const userInfo = {name: config.NAME, birth: config.BIRTH}
+            res.status(200).json({ lists, userInfo })
         } catch (error) {
             next(error)
         }
