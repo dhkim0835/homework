@@ -1,6 +1,7 @@
 import { IService } from "../api/routes/listRouter"
 import { IList } from "../db/schemas/list"
 import { IPassword } from "../db/schemas/password"
+import { HttpException } from "../exception/httpException"
 
 type pagenation = {
     lists: IList[],
@@ -58,7 +59,7 @@ export class ListService implements IService {
 
                 return deletedList
             } else {
-                throw new Error ("비밀번호가 일치하지 않습니다.")
+                throw new HttpException(400, "비밀번호가 일치하지 않습니다.")
             }
         } else {
             const deletedList = await this.listModel.deleteList(id)
