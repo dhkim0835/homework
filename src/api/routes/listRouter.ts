@@ -1,6 +1,19 @@
-import { Router } from "express"
+import { NextFunction, Request, Response, Router } from "express"
 import { IList } from "../../db/schemas/list"
+import {responseFormagger} from "../../utils/responseFormmater"
+
 import config from "../../configs"
+
+// userid를 전달하기 위해 Request user 프로퍼티 추가
+declare global {
+  namespace Express {
+    interface Request {
+        responseObject: any;
+        statusCode: number
+    }
+  }
+}
+
 export interface IService {
     createList: (listInfo: IList) => Promise<IList>
     getAllList: () => Promise<IList[]>
@@ -18,7 +31,7 @@ export class ListRouter {
         this.routes()
     }
 
-    private createList = async (req, res, next):Promise<void> => {
+    private createList = async (req: Request, res: Response, next: NextFunction):Promise<void> => {
         try {
             const { description } = req.body
             const newListInfo: IList = {
@@ -26,8 +39,7 @@ export class ListRouter {
             }
             const newList = await this.service.createList(newListInfo)
             
-            req.responseObject = newList; 
-            req.statusCode = 201
+            responseFormagger(req, newList, 201)
             return next()
 
         } catch (error) {
@@ -35,19 +47,19 @@ export class ListRouter {
         }
     }
 
-    private getAllList = async (req, res, next):Promise<void> => {
+    private getAllList = async (req: Request, res: Response, next: NextFunction):Promise<void> => {
         try {
             const lists = await this.service.getAllList()
             if (process.env.NODE_ENV === 'production') {
-                req.responseObject = lists;
-                req.statusCode = 200
+                responseFormagger(req, lists, 200)
+
 
                 return next()
 
             } else {
-                const userInfo = {name: config.NAME, birth: config.BIRTH}
-                req.responseObject = { lists, userInfo }; 
-                req.statusCode = 200
+                const userInfo = { name: config.NAME, birth: config.BIRTH }
+                responseFormagger(req, { lists, userInfo }, 200)
+
 
                 return next()
             }
@@ -57,15 +69,14 @@ export class ListRouter {
         }
     }
 
-    private getListWithPagenation = async (req, res, next) => {
+    private getListWithPagenation = async (req: Request, res: Response, next: NextFunction) => {
         try {
             const page = Number(req.query.page || 1); // 값이 없다면 기본값으로 1 사용
             const perPage = Number(req.query.perPage || 10);
 
             const pagenatedList = await this.service.getListWithPagenation(page, perPage)
 
-            req.responseObject = pagenatedList
-            req.statusCode = 200
+            responseFormagger(req, pagenatedList, 200)
 
             return next()
 
@@ -74,13 +85,12 @@ export class ListRouter {
         }
     }
 
-    private updateIsSuccess = async (req, res, next):Promise<void> => {
+    private updateIsSuccess = async (req: Request, res: Response, next: NextFunction):Promise<void> => {
         try {
             const id = req.params.id
             const udpatedIsSuccess = await this.service.updateIsSuccess(id)
 
-            req.responseObject = { isSuccess: udpatedIsSuccess?.isSuccess }
-            req.statusCode = 200
+            responseFormagger(req, { isSuccess: udpatedIsSuccess?.isSuccess }, 200)
 
             return next()
         } catch (error) {
@@ -88,15 +98,14 @@ export class ListRouter {
         }
     }
 
-    private deleteList = async (req, res, next):Promise<void> => {
+    private deleteList = async (req: Request, res: Response, next: NextFunction):Promise<void> => {
         try {
             if (process.env.NODE_ENV === "production") {
                 const id = req.params.id
                 const password = req.body.password
                 const deletedList = await this.service.deleteList(id, password)
 
-                req.responseObject = `${deletedList?.description}이(가) 삭제되었습니다.`
-                req.statusCode = 200
+                responseFormagger(req, `${deletedList?.description}이(가) 삭제되었습니다.`, 200)
 
                 return next()
             }
@@ -104,9 +113,8 @@ export class ListRouter {
                 const id = req.params.id
                 const deletedList = await this.service.deleteList(id)
 
-                req.responseObject = `${deletedList?.description}이(가) 삭제되었습니다.`
-                req.statusCode = 200
-                
+                responseFormagger(req, `${deletedList?.description}이(가) 삭제되었습니다.`, 200)
+
                 return next()
             }
         } catch (error) {
