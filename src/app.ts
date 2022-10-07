@@ -61,8 +61,10 @@ export class Server {
 
 
         this.setRouters()
-        this.app.use(errorMiddleware)
+
         this.app.use(responseFormatterMiddleware)
+        this.app.use(errorMiddleware)
+
     }
 
     initialize(port) {

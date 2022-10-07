@@ -39,12 +39,16 @@ export class ListRouter {
         try {
             const lists = await this.service.getAllList()
             if (process.env.NODE_ENV === 'production') {
-                req.responseObject = lists; 
+                req.responseObject = lists;
+                req.statusCode = 200
+
                 return next()
 
             } else {
                 const userInfo = {name: config.NAME, birth: config.BIRTH}
                 req.responseObject = { lists, userInfo }; 
+                req.statusCode = 200
+
                 return next()
             }
             
@@ -61,6 +65,8 @@ export class ListRouter {
             const pagenatedList = await this.service.getListWithPagenation(page, perPage)
 
             req.responseObject = pagenatedList
+            req.statusCode = 200
+
             return next()
 
         } catch (error) {
@@ -73,7 +79,9 @@ export class ListRouter {
             const id = req.params.id
             const udpatedIsSuccess = await this.service.updateIsSuccess(id)
 
-            req.responseObject = { isSuccess: udpatedIsSuccess?.isSuccess}
+            req.responseObject = { isSuccess: udpatedIsSuccess?.isSuccess }
+            req.statusCode = 200
+
             return next()
         } catch (error) {
             next(error)
@@ -86,13 +94,19 @@ export class ListRouter {
                 const id = req.params.id
                 const password = req.body.password
                 const deletedList = await this.service.deleteList(id, password)
+
                 req.responseObject = `${deletedList?.description}이(가) 삭제되었습니다.`
+                req.statusCode = 200
+
                 return next()
             }
             else {
                 const id = req.params.id
                 const deletedList = await this.service.deleteList(id)
+
                 req.responseObject = `${deletedList?.description}이(가) 삭제되었습니다.`
+                req.statusCode = 200
+                
                 return next()
             }
         } catch (error) {
