@@ -68,3 +68,18 @@
 
 - sudo apt install psmisc
 - fuser -k [열린 포트]/tcp
+
+##### 우분투 노드 설치
+
+- curl -sL https://deb.nodesource.com/setup_16.x | sudo -E bash
+- sudo apt-get install -y nodejs
+
+npm 설치
+
+- sudo apt install npm
+
+설치가 안 될때 이렇게 해보자!
+sudo npm install -g <ModuleName> --unsafe-perm=true --allow-root
+
+npm install -g pm2
+
