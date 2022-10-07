@@ -14,6 +14,7 @@ import { MongoListModel } from "./db/moedels/List"
 
 
 import { errorMiddleware } from "./api"
+import {responseFormatterMiddleware} from "./api"
 
 import config from "./configs"
 
@@ -56,6 +57,7 @@ export class Server {
 
         this.setRouters()
         this.app.use(errorMiddleware)
+        this.app.use(responseFormatterMiddleware)
     }
 
     initialize(port) {

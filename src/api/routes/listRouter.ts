@@ -26,7 +26,10 @@ export class ListRouter {
             }
             const newList = await this.service.createList(newListInfo)
             
-            res.status(201).json(newList)
+            req.responseObject = newList; 
+            req.statusCode = 201
+            return next()
+
         } catch (error) {
             next(error)
         }
@@ -36,10 +39,13 @@ export class ListRouter {
         try {
             const lists = await this.service.getAllList()
             if (process.env.NODE_ENV === 'production') {
-                res.status(200).json(lists)    
+                req.responseObject = lists; 
+                return next()
+
             } else {
                 const userInfo = {name: config.NAME, birth: config.BIRTH}
-                res.status(200).json({ lists, userInfo })
+                req.responseObject = { lists, userInfo }; 
+                return next()
             }
             
         } catch (error) {
@@ -54,7 +60,8 @@ export class ListRouter {
 
             const pagenatedList = await this.service.getListWithPagenation(page, perPage)
 
-            res.status(200).json(pagenatedList)
+            req.responseObject = pagenatedList
+            return next()
 
         } catch (error) {
             next(error)
@@ -66,7 +73,8 @@ export class ListRouter {
             const id = req.params.id
             const udpatedIsSuccess = await this.service.updateIsSuccess(id)
 
-            res.status(200).json(udpatedIsSuccess) 
+            req.responseObject = udpatedIsSuccess
+            return next()
         } catch (error) {
             next(error)
         }
@@ -77,7 +85,8 @@ export class ListRouter {
             const id = req.params.id
             const deletedList = await this.service.deleteList(id)
 
-            res.status(200).json(deletedList)
+            req.responseObject = deletedList
+            return next()
         } catch (error) {
             next(error)
         }
