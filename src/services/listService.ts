@@ -1,7 +1,7 @@
 import { IService } from "../api/routes/listRouter"
 import { IList } from "../db/schemas/list"
 
-export interface IModel {
+export interface IListModel {
     createList: (listInfo: IList) => Promise<IList>
     getAllList: () => Promise<IList[]>
     updateIsSuccess: (id: string) => Promise<IList | null>
@@ -10,37 +10,44 @@ export interface IModel {
 }
 
 export class ListService implements IService {
-    public model: IModel
-    constructor(model) {
-        this.model = model
+    public listModel: IListModel
+    public passwordModel
+    constructor(listModel, passwordModel) {
+        this.listModel = listModel
+        this.passwordModel = passwordModel
     }
 
     public createList = async (listInfo: IList): Promise<IList> => {
-        const newList = await this.model.createList(listInfo)
+        const newList = await this.listModel.createList(listInfo)
         return newList
     }
 
     public getAllList = async (): Promise<IList[]> => {
-        const lists = await this.model.getAllList()
+        const lists = await this.listModel.getAllList()
 
         return lists
     }
 
     public getListWithPagenation = async (page, perPage) => {
-        const pagenatedList = await this.model.getListWithPagenation(page, perPage)
+        const pagenatedList = await this.listModel.getListWithPagenation(page, perPage)
         
         return pagenatedList
     }
 
     public updateIsSuccess = async (id: string): Promise<IList | null>  => {
-        const updatedIsSuccess = await this.model.updateIsSuccess(id)
+        const updatedIsSuccess = await this.listModel.updateIsSuccess(id)
 
         return updatedIsSuccess
     }
 
-    public deleteList = async (id: string): Promise<IList | null>  => {
-        const deletedList = await this.model.deleteList(id)
+    public deleteList = async (id: string, password: string): Promise<IList | null> => {
+        const isPassword = await this.passwordModel.comparePassword(password)
+        if (isPassword === true) {
+            const deletedList = await this.listModel.deleteList(id)
 
-        return deletedList
+            return deletedList
+        } else {
+            throw new Error ("비밀번호가 일치하지 않습니다.")
+        }
     }
 }

@@ -11,11 +11,11 @@ interface IPasswordDocument extends IPassword, Document {
 
 // Model을 통해 생성되는 아이가 다큐먼트이다.
 // PasswordSchema statics로 생성되는 아이의 타입이 들어가는 곳
-interface IPasswordModel extends Model<IPasswordDocument> {
-
+    interface IPasswordModel extends Model<IPasswordDocument> {
+        findPassword:() => Promise<IPassword>
 }
 
-const PasswordSchema: Schema<IPasswordDocument> = new Schema(
+const passwordSchema: Schema<IPasswordDocument> = new Schema(
   {
     password: {
         type: String,
@@ -27,4 +27,6 @@ const PasswordSchema: Schema<IPasswordDocument> = new Schema(
   },
 );
 
-export const passwordModel = mongoose.model<IPasswordDocument, IPasswordModel>("Password", PasswordSchema)
+passwordSchema.statics.findPassword = function () { return this.find({})}
+
+export const passwordModel = mongoose.model<IPasswordDocument, IPasswordModel>("Password", passwordSchema)

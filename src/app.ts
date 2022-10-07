@@ -17,6 +17,7 @@ import { errorMiddleware } from "./api"
 import {responseFormatterMiddleware} from "./api"
 
 import config from "./configs"
+import { MongoPasswordModel } from "./db/moedels/Password"
 
 export class Server {
     private app
@@ -24,7 +25,11 @@ export class Server {
 
     constructor() {
         this.app = express()
-        this.listRouter = new ListRouter(new ListService(new MongoListModel()))
+        this.listRouter = new ListRouter(
+            new ListService(
+                new MongoListModel(), new MongoPasswordModel()
+            )
+        )
     }
 
     setRouters() {

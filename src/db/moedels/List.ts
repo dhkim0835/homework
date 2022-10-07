@@ -1,7 +1,7 @@
-import { IModel } from "../../services/listService"
+import { IListModel } from "../../services/listService"
 import { IList, listModel } from "../schemas/list"
 
-export class MongoListModel implements IModel {
+export class MongoListModel implements IListModel {
     public listModel = listModel
     
 
