@@ -35,8 +35,13 @@ export class ListRouter {
     private getAllList = async (req, res, next):Promise<void> => {
         try {
             const lists = await this.service.getAllList()
-            const userInfo = {name: config.NAME, birth: config.BIRTH}
-            res.status(200).json({ lists, userInfo })
+            if (process.env.NODE_ENV === 'production') {
+                res.status(200).json(lists)    
+            } else {
+                const userInfo = {name: config.NAME, birth: config.BIRTH}
+                res.status(200).json({ lists, userInfo })
+            }
+            
         } catch (error) {
             next(error)
         }

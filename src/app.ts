@@ -47,7 +47,12 @@ export class Server {
         })
         this.app.use(limiter)
 
-        this.app.use(favicon(path.join(__dirname, 'public', 'typescript.png')))
+        if (process.env.NODE_ENV === 'production') {
+        this.app.use(favicon(path.join(__dirname, '../src/public', 'DW.jpg')))
+        } else {
+        this.app.use(favicon(path.join(__dirname, 'public', 'DW.jpg')))
+        }
+
 
         this.setRouters()
         this.app.use(errorMiddleware)
