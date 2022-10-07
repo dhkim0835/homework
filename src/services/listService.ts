@@ -1,17 +1,27 @@
 import { IService } from "../api/routes/listRouter"
 import { IList } from "../db/schemas/list"
+import { IPassword } from "../db/schemas/password"
 
+type pagenation = {
+    lists: IList[],
+    totalPage: number
+}
 export interface IListModel {
     createList: (listInfo: IList) => Promise<IList>
     getAllList: () => Promise<IList[]>
     updateIsSuccess: (id: string) => Promise<IList | null>
     deleteList: (id: string) => Promise<IList | null>
-    getListWithPagenation: (perPage: number, page: number) => Promise<any>
+    getListWithPagenation: (perPage: number, page: number) => Promise<pagenation>
+}
+
+export interface IPasswordModel {
+    createPassword: (password: string) => Promise<IPassword>
+    comparePassword: (password: string) => Promise<boolean>
 }
 
 export class ListService implements IService {
     public listModel: IListModel
-    public passwordModel
+    public passwordModel: IPasswordModel
     constructor(listModel, passwordModel) {
         this.listModel = listModel
         this.passwordModel = passwordModel
