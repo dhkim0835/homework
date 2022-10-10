@@ -13,10 +13,10 @@ import { ListService } from "./services/listService";
 import { MongoListModel } from "./db/moedels/List";
 
 import { responseFormatterMiddleware } from "./api";
+import { errorMiddleware } from "./api";
 
 import config from "./configs";
 import { MongoPasswordModel } from "./db/moedels/Password";
-import { errorLogger, errorResponder, invalidPathHandler } from "./exception/appError";
 
 export class Server {
   private app;
@@ -56,19 +56,9 @@ export class Server {
 
     this.setRouters();
 
-    // Attach the first Error handling Middleware
-    // function defined above (which logs the error)
-    this.app.use(errorLogger);
-
-    // Attach the second Error handling Middleware
-    // function defined above (which sends back the response)
-    this.app.use(errorResponder);
-
-    // Attach the fallback Middleware
-    // function which sends back the response for invalid paths)
-    this.app.use(invalidPathHandler);
-
     this.app.use(responseFormatterMiddleware);
+
+    this.app.use(errorMiddleware);
   }
 
   initialize(port) {
