@@ -94,7 +94,7 @@ export class ListRouter {
 
   private deleteList = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
-      if (process.env.NODE_ENV === "development") {
+      if (process.env.NODE_ENV === "production") {
         const id = req.params.id;
         const password = req.body.password;
         const deletedList = await this.service.deleteList(id, password);
