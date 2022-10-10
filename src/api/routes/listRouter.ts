@@ -4,16 +4,6 @@ import { responseFormagger } from "../../utils/responseFormmater";
 
 import config from "../../configs";
 
-// userid를 전달하기 위해 Request user 프로퍼티 추가
-declare global {
-  namespace Express {
-    interface Request {
-      responseObject?: any;
-      statusCode?: number;
-    }
-  }
-}
-
 export interface IService {
   createList: (listInfo: IList) => Promise<IList>;
   getAllList: () => Promise<IList[]>;
