@@ -15,10 +15,9 @@ import { errorMiddleware } from "./api";
 
 import config from "./configs";
 
-
 export class Server {
-  private app;
-  private listRouter;
+  private app: express.Application;
+  private listRouter: typeof listRouter;
 
   constructor() {
     this.app = express();
@@ -55,7 +54,6 @@ export class Server {
     this.setRouters();
 
     this.app.use(responseFormatterMiddleware);
-
     this.app.use(errorMiddleware);
   }
 

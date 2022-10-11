@@ -1,12 +1,8 @@
 import { hashPassword } from "../../utils/hashPassword";
-import { IPassword } from "../schemas/password";
-
-import { passwordModel } from "../schemas/password";
+import { IPassword, passwordModel } from "../schemas/password";
 
 import bcrypt from "bcrypt";
 import { AppError } from "../../exception/appError";
-
-
 
 const createPassword = async (password: string): Promise<IPassword> => {
   const hashedPassword = await hashPassword(password);

@@ -3,7 +3,6 @@ import { Router } from "express"
 import { NextFunction, Request, Response } from "express";
 
 import { IList } from "../../db/schemas/list";
-
 import { responseFormagger } from "../../utils/responseFormmater";
 
 import config from "../../configs";
@@ -45,7 +44,7 @@ listRouter.get("/",  async (req: Request, res: Response, next: NextFunction): Pr
   }
 });
 
-listRouter.get("/pagenate", async (req: Request, res: Response, next: NextFunction) => {
+listRouter.get("/pagenate", async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
     const page = Number(req.query.page || 1); // 값이 없다면 기본값으로 1 사용
     const perPage = Number(req.query.perPage || 10);

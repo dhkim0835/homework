@@ -10,5 +10,5 @@
     "vueIndentScriptAndStyle": false,
     "endOfLine": "auto",
     "editor.formatOnSave": true,
-    "singleQuote": false
+    "singleQuote": true
 }

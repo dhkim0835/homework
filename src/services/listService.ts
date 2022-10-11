@@ -1,12 +1,13 @@
-import { AppError } from "./../exception/appError";
 import { IList } from "../db/schemas/list";
 
 import * as listModel from "../db/moedels/List"
 import * as passwordModel from "../db/moedels/Password"
 
+import { AppError } from "./../exception/appError";
 
 const createList = async (listInfo: IList): Promise<IList> => {
   const newList = await listModel.createList(listInfo);
+
   return newList;
 };
 
