@@ -1,18 +1,30 @@
-version: 0.0
-os: linux
-files:
-  - source:  /
-    destination: /home/ubuntu/github_action
-    overwrite: yes
+name: Example workflow for S3 Deploy
+on: [push]
+env:
+  S3_BUCKET_NAME: kimddakki-s3
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    env:
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+    steps:
+      - uses: actions/checkout@v3
 
-permissions:
-  - object: /
-    pattern: "**"
-    owner: ubuntu
-    group: ubuntu
+      - name: Install dependencies
+        run: yarn
 
-hooks:
-  ApplicationStart:
-    - location: scripts/gh_deploy.sh
-      timeout: 60
-      runas: ubuntu
+      - name: Build
+        run: yarn run start:dev
+
+      - name: Deploy
+        uses: reggionick/s3-deploy@v3
+        with:
+          folder: build
+          bucket: ${{ S3_BUCKET_NAME }}
+          bucket-region: ap-northeast-2
+          invalidation: /
+          delete-removed: true
+          no-cache: true
+          private: true
+          filesToInclude: ".*/*,*/*,**"
