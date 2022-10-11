@@ -34,4 +34,4 @@ jobs:
         aws-region: ap-northeast-2
         
     - name: upload to S3
-      run: aws s3 cp --region ap-northeast-2 ./kimddakki-s3.zip s3://kimddakki-s3/
+      run: aws s3 cp --region ap-northeast-2 s3://kimddakki-s3/
