@@ -8,15 +8,13 @@ import rateLimit from "express-rate-limit";
 import favicon from "serve-favicon";
 import path from "path";
 
-import { ListRouter } from "./api";
-import { ListService } from "./services/listService";
-import { MongoListModel } from "./db/moedels/List";
+import { listRouter } from "./api";
 
 import { responseFormatterMiddleware } from "./api";
 import { errorMiddleware } from "./api";
 
 import config from "./configs";
-import { MongoPasswordModel } from "./db/moedels/Password";
+
 
 export class Server {
   private app;
@@ -24,7 +22,7 @@ export class Server {
 
   constructor() {
     this.app = express();
-    this.listRouter = new ListRouter(new ListService(new MongoListModel(), new MongoPasswordModel()));
+    this.listRouter = listRouter
   }
 
   setRouters() {
@@ -32,7 +30,7 @@ export class Server {
       res.send("Hello World!!");
     });
 
-    this.app.use("/list", this.listRouter.listRouter);
+    this.app.use("/list", this.listRouter);
   }
 
   setMiddlewares() {
