@@ -1,35 +1,52 @@
-import { Router } from "express"
+import { AppError } from './../../exception/appError';
+import { BodyDtoValidatorMiddleware } from '../middlewares/bodydto-validatorMiddleware';
+import { Router } from 'express';
 
-import { NextFunction, Request, Response } from "express";
+import { NextFunction, Request, Response } from 'express';
 
-import { IList } from "../../db/schemas/list";
-import { responseFormagger } from "../../utils/responseFormmater";
+import { IList } from '../../db/schemas/list';
+import { responseFormagger } from '../../utils/responseFormmater';
 
-import config from "../../configs";
+import config from '../../configs';
 
-import * as listService from "../../services/listService"
+import * as listService from '../../services/listService';
+import { ListCreateAPI } from '../middlewares/DTO/create-list.dto';
+import { validate } from 'class-validator';
 
-const listRouter = Router()
+const listRouter = Router();
 
-listRouter.post("/", async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-  try {
-    const { description } = req.body;
-    const newListInfo: IList = {
-      description,
-    };
-    const newList = await listService.createList(newListInfo);
+listRouter.post(
+  '/',
+  BodyDtoValidatorMiddleware(ListCreateAPI),
+  async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const list = new ListCreateAPI();
+      list.description = req.body;
 
-    responseFormagger(req, newList, 201);
-    return next();
-  } catch (error) {
-    next(error);
-  }
-});
+      const errors = await validate(list);
 
-listRouter.get("/",  async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+      if (errors.length) {
+        throw new AppError(400, errors);
+      }
+
+      //const { description } = req.body;
+      const newListInfo: IList = {
+        description: list.description,
+      };
+      const newList = await listService.createList(newListInfo);
+
+      responseFormagger(req, newList, 201);
+      return next();
+    } catch (error) {
+      next(error);
+    }
+  },
+);
+
+listRouter.get('/', async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
     const lists = await listService.getAllList();
-    if (process.env.NODE_ENV === "production") {
+    if (process.env.NODE_ENV === 'production') {
       responseFormagger(req, lists, 200);
 
       return next();
@@ -44,7 +61,7 @@ listRouter.get("/",  async (req: Request, res: Response, next: NextFunction): Pr
   }
 });
 
-listRouter.get("/pagenate", async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+listRouter.get('/pagenate', async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
     const page = Number(req.query.page || 1); // 값이 없다면 기본값으로 1 사용
     const perPage = Number(req.query.perPage || 10);
@@ -59,7 +76,7 @@ listRouter.get("/pagenate", async (req: Request, res: Response, next: NextFuncti
   }
 });
 
-listRouter.patch("/:id", async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+listRouter.patch('/:id', async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
     const id = req.params.id;
     const udpatedIsSuccess = await listService.updateIsSuccess(id);
@@ -72,9 +89,9 @@ listRouter.patch("/:id", async (req: Request, res: Response, next: NextFunction)
   }
 });
 
-listRouter.delete("/:id", async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+listRouter.delete('/:id', async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
-    if (process.env.NODE_ENV === "production") {
+    if (process.env.NODE_ENV === 'production') {
       const id = req.params.id;
       const password = req.body.password;
       const deletedList = await listService.deleteList(id, password);
@@ -95,4 +112,4 @@ listRouter.delete("/:id", async (req: Request, res: Response, next: NextFunction
   }
 });
 
-export { listRouter }
+export { listRouter };

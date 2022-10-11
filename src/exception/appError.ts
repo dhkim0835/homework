@@ -1,7 +1,7 @@
 export class AppError extends Error {
   statusCode: number;
 
-  constructor(statusCode: number, message: string) {
+  constructor(statusCode: number, message: any) {
     super(message);
 
     Object.setPrototypeOf(this, new.target.prototype);
