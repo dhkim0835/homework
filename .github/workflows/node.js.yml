@@ -11,6 +11,12 @@ on:
  
   # 이부분은 위의 trigger가 없어도 수동으로 동작 할 수 있게끔 해주는 역할을 합니다.
   workflow_dispatch:
+  
+env:
+  S3_BUCKET_NAME: kimddakki-s3
+  RESOURCE_PATH: ./src/main/resources/application.yaml
+  CODE_DEPLOY_APPLICATION_NAME: githubaction-test
+  CODE_DEPLOY_DEPLOYMENT_GROUP_NAME: githubaction-test-group
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -33,9 +39,16 @@ jobs:
         aws-secret-access-key: ${{ secrets.SECRET_KEY }}
         aws-region: ap-northeast-2
         
-    # 파일 압축
     - name: Make zip file
-      run: zip -r ./kimddakki-s3.zip ./deploy
+      run: zip -r ./$GITHUB_SHA.zip .
+      shell: bash
       
-    - name: upload to S3
-      run: aws s3 cp --region ap-northeast-2 ./kimddakki-s3.zip s3://kimddakki-s3/
+    - name: Upload to S3
+      run: aws s3 cp --region ap-northeast-2 ./$GITHUB_SHA.zip s3://$S3_BUCKET_NAME/$GITHUB_SHA.zip
+    - name: Code Deploy
+      run: |
+        aws deploy create-deployment \
+        --deployment-config-name CodeDeployDefault.AllAtOnce \
+        --application-name ${{ env.CODE_DEPLOY_APPLICATION_NAME }} \
+        --deployment-group-name ${{ env.CODE_DEPLOY_DEPLOYMENT_GROUP_NAME }} \
+        --s3-location bucket=$S3_BUCKET_NAME,bundleType=zip,key=$GITHUB_SHA.zip
