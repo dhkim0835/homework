@@ -1,9 +1,9 @@
-import { IList } from "../db/schemas/list";
+import { IList } from '../db/schemas/list';
 
-import * as listModel from "../db/moedels/List"
-import * as passwordModel from "../db/moedels/Password"
+import * as listModel from '../db/moedels/List';
+import * as passwordModel from '../db/moedels/Password';
 
-import { AppError } from "./../exception/appError";
+import { AppError } from './../exception/appError';
 
 const createList = async (listInfo: IList): Promise<IList> => {
   const newList = await listModel.createList(listInfo);
@@ -30,7 +30,7 @@ const updateIsSuccess = async (id: string): Promise<IList | null> => {
 };
 
 const deleteList = async (id: string, password?: string): Promise<IList | null> => {
-  if (typeof password === "string") {
+  if (typeof password === 'string') {
     const isPassword = await passwordModel.comparePassword(password);
     if (isPassword === true) {
       const deletedList = await listModel.deleteList(id);
@@ -48,5 +48,4 @@ const deleteList = async (id: string, password?: string): Promise<IList | null> 
   }
 };
 
-
-export { createList, getAllList, getListWithPagenation, updateIsSuccess, deleteList }
+export { createList, getAllList, getListWithPagenation, updateIsSuccess, deleteList };
