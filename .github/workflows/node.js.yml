@@ -35,7 +35,7 @@ jobs:
         
     # 파일 압축
     - name: Make zip file
-      run: zip -r ./springboor-with-githubaction.zip ./deploy
+      run: zip -r ./kimddakki-s3.zip ./deploy
       
     - name: upload to S3
-      run: aws s3 cp --region ap-northeast-2 s3://kimddakki-s3/
+      run: aws s3 cp --region ap-northeast-2 ./kimddakki-s3.zip s3://kimddakki-s3/
