@@ -27,7 +27,7 @@ jobs:
     - name: Clean temp directory
       run: |
         rm -rf *
-        cp -r /home/ubuntu/homwork . 
+        cp -r /home/ubuntu/homework . 
       
     - name: archive drcloud 
       run: tar cvfz ./drcloud.tar.gz *
